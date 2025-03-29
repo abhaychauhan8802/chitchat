@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 // local imports
 import connectDB from "./lib/connectDB.js";
 import authRouter from "./routes/auth.route.js";
+import messageRouter from "./routes/message.route.js";
 
 dotenv.config();
 const PORT = process.env.PORT || 3000;
@@ -20,6 +21,7 @@ app.get("/test", (req, res) => {
 });
 
 app.use("/api/auth", authRouter);
+app.use("/api/message", messageRouter);
 
 app.listen(PORT, () => {
   console.log("Server is listen on port 3000");
