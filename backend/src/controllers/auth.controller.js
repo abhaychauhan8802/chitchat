@@ -4,6 +4,7 @@ import User from "../models/user.model.js";
 import { resMessage } from "../utils/resMessage.js";
 import { generateToken } from "../utils/generateToken.js";
 import { setCookies } from "../utils/setCookies.js";
+import cloudinary from "../lib/cloudinary.js";
 
 export const register = async (req, res) => {
   const { fullname, email, password } = req.body;
@@ -84,6 +85,32 @@ export const profile = async (req, res) => {
     res.status(200).json(resMessage(true, user));
   } catch (error) {
     console.log("Error in profile route", error.message);
+    res.status(500).json(resMessage(false, error.message));
+  }
+};
+
+export const updateProfile = async (req, res) => {
+  const { profilePic } = req.body;
+
+  try {
+    const userId = req.userId;
+
+    if (!profilePic)
+      return res
+        .status(400)
+        .json(resMessage(false, "Profile picture in required"));
+
+    const uploadResponse = await cloudinary.uploader.upload(profilePic);
+
+    const updateUserProfile = await User.findByIdAndUpdate(
+      userId,
+      { profilePic: uploadResponse.secure_url },
+      { new: true }
+    ).select("-password");
+
+    res.status(200).json(resMessage(true, updateUserProfile));
+  } catch (error) {
+    console.log("Error in updaterProfile route", error.message);
     res.status(500).json(resMessage(false, error.message));
   }
 };
