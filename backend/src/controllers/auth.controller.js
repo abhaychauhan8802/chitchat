@@ -6,7 +6,7 @@ import { generateToken } from "../utils/generateToken.js";
 import { setCookies } from "../utils/setCookies.js";
 import cloudinary from "../lib/cloudinary.js";
 
-export const register = async (req, res) => {
+export const signup = async (req, res) => {
   const { fullname, email, password } = req.body;
 
   try {
@@ -25,11 +25,13 @@ export const register = async (req, res) => {
 
     const user = await User.create({ fullname, email, password });
 
+    user.password = "";
+
     const token = generateToken(user._id);
 
     setCookies(res, token);
 
-    res.status(201).json(resMessage(true, "Registration successfully"));
+    res.status(201).json(resMessage(true, user));
   } catch (error) {
     console.log("Error in register route", error.message);
     res.status(500).json(resMessage(false, error.message));
@@ -56,9 +58,11 @@ export const login = async (req, res) => {
 
     const token = generateToken(existUser._id);
 
+    existUser.password = "";
+
     setCookies(res, token);
 
-    res.status(200).json(resMessage(true, "Login successfully"));
+    res.status(200).json(resMessage(true, existUser));
   } catch (error) {
     console.log("Error in login route", error.message);
     res.status(500).json(resMessage(false, error.message));

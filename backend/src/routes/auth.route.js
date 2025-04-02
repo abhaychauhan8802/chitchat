@@ -2,7 +2,7 @@ import { Router } from "express";
 
 // local import
 import {
-  register,
+  signup,
   login,
   profile,
   logout,
@@ -12,7 +12,7 @@ import { verifyToken } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.post("/register", register);
+router.post("/signup", signup);
 router.post("/login", login);
 router.post("/logout", verifyToken, logout);
 router.put("/update-profile", verifyToken, updateProfile);
