@@ -104,7 +104,9 @@ export const updateProfile = async (req, res) => {
         .status(400)
         .json(resMessage(false, "Profile picture in required"));
 
-    const uploadResponse = await cloudinary.uploader.upload(profilePic);
+    const uploadResponse = await cloudinary.uploader.upload(profilePic, {
+      folder: "chitchat/profile-pic",
+    });
 
     const updateUserProfile = await User.findByIdAndUpdate(
       userId,

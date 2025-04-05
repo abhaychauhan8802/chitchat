@@ -1,8 +1,41 @@
 import { HiOutlineDotsVertical } from "react-icons/hi";
+import { useAuthStore } from "../store/useAuthStore";
+
+const ProfileDropDown = () => {
+  const { authUser } = useAuthStore();
+  return (
+    <div className="py-3">
+      <div>
+        <div
+          tabIndex={0}
+          className={`avatar cursor-pointer ${
+            !authUser?.profilePic && "avatar-placeholder"
+          }`}
+        >
+          <div className="bg-neutral text-neutral-content w-9 rounded-full">
+            {authUser?.profilePic ? (
+              <img src={authUser?.profilePic} alt="profilepic" />
+            ) : (
+              <span className="text-md font-bold">
+                {String(authUser?.fullname).charAt(0).toUpperCase()}
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col">
+        <span className="text-gray-600">{authUser.fullname}</span>
+        <span className="text-gray-400">{authUser.email}</span>
+      </div>
+    </div>
+  );
+};
 
 const UserHeader = () => {
+  const { authUser, logout } = useAuthStore();
+
   return (
-    <div className="navbar bg-base-100 shadow-sm px-5">
+    <div className="navbar bg-base-100 px-5">
       <div className="flex-1">
         <span className="text-2xl select-none font-bold text-gray-800">
           ChitChat
@@ -12,18 +45,36 @@ const UserHeader = () => {
       {/* Dropdown */}
       <div className="flex-none">
         <div className="dropdown dropdown-end">
-          <button className="btn btn-square btn-ghost rounded-full text-lg">
-            <HiOutlineDotsVertical />
-          </button>
+          <div
+            tabIndex={0}
+            className={`avatar cursor-pointer ${
+              !authUser?.profilePic && "avatar-placeholder"
+            }`}
+          >
+            <div className="bg-neutral text-neutral-content w-9 rounded-full">
+              {authUser?.profilePic ? (
+                <img src={authUser?.profilePic} alt="profilepic" />
+              ) : (
+                <span className="text-md font-bold">
+                  {String(authUser?.fullname).charAt(0).toUpperCase()}
+                </span>
+              )}
+            </div>
+          </div>
           <ul
             tabIndex={0}
-            className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+            className="dropdown-content menu gap-1 bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
           >
             <li>
-              <a>Item 1</a>
+              <ProfileDropDown />
             </li>
             <li>
-              <a>Item 2</a>
+              <button
+                className="btn btn-sm btn-soft btn-error"
+                onClick={() => logout()}
+              >
+                Logout
+              </button>
             </li>
           </ul>
         </div>

@@ -2,7 +2,7 @@ import { Toaster } from "react-hot-toast";
 import { useEffect } from "react";
 
 import { Routes, Route, Navigate } from "react-router";
-import { Home, Login, PageNotFound, Signup } from "./pages";
+import { Chat, Login, PageNotFound, Signup } from "./pages";
 import { ProtectedRoutes } from "./components";
 import { useAuthStore } from "./store/useAuthStore";
 
@@ -33,7 +33,9 @@ const App = () => {
         />
 
         <Route element={<ProtectedRoutes />}>
-          <Route path="/" element={<Home />} />
+          <Route path="/chat/:userId" element={<Chat />} />
+          <Route path="/" element={<Navigate to="/chat" replace />} />
+          <Route path="/chat" element={<Chat />} />
         </Route>
 
         <Route path="*" element={<PageNotFound />} />

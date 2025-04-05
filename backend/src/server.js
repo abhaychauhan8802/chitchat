@@ -4,14 +4,13 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 
 // local imports
+import { server, app } from "./lib/socket.js";
 import connectDB from "./lib/connectDB.js";
 import authRouter from "./routes/auth.route.js";
 import messageRouter from "./routes/message.route.js";
 
 dotenv.config();
 const PORT = process.env.PORT || 3000;
-
-const app = express();
 
 app.use(
   cors({
@@ -31,7 +30,7 @@ app.get("/test", (req, res) => {
 app.use("/api/auth", authRouter);
 app.use("/api/message", messageRouter);
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log("Server is listen on port 3000");
   connectDB();
 });

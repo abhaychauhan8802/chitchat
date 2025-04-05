@@ -78,7 +78,9 @@ const Login = () => {
 
           <button
             type="submit"
-            className={`btn btn-neutral mt-5 ${isLoggingUp && "btn-disabled"}`}
+            className={`btn btn-neutral mt-5 ${
+              isLoggingUp && "btn-disabled cursor-not-allowed"
+            }`}
           >
             {isLoggingUp && <span className="loading loading-spinner"></span>}
             Login
